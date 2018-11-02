@@ -3,6 +3,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class PotterCalculatorTest {
 
@@ -16,18 +19,32 @@ public class PotterCalculatorTest {
     @Test
     public void single_book_costs_base_price() {
         BigDecimal price = calculator.priceFor(PotterCalculator.BOOKS.BOOK1);
-        Assert.assertEquals(PotterCalculator.SINGLE_BOOK_PRICE,price);
+        Assert.assertEquals(bd(8),price);
     }
 
     @Test
     public void multiple_identical_books_cost_multiple_base_price() {
         BigDecimal price = calculator.priceFor(PotterCalculator.BOOKS.BOOK1,PotterCalculator.BOOKS.BOOK1);
-        Assert.assertEquals(PotterCalculator.SINGLE_BOOK_PRICE.multiply(new BigDecimal(2)),price);
+        Assert.assertEquals(product(8,2),price);
     }
 
     @Test
     public void two_different_books_get_discount() {
         BigDecimal price = calculator.priceFor(PotterCalculator.BOOKS.BOOK1,PotterCalculator.BOOKS.BOOK2);
-        Assert.assertEquals(PotterCalculator.SINGLE_BOOK_PRICE.multiply(new BigDecimal(2)).multiply(new BigDecimal(0.95)),price);
+        Assert.assertEquals(product(8,2,0.95),price);
+    }
+
+    @Test
+    public void two_different_and_one_identical_book_get_combined_price() {
+        BigDecimal price = calculator.priceFor(PotterCalculator.BOOKS.BOOK1,PotterCalculator.BOOKS.BOOK2,PotterCalculator.BOOKS.BOOK1);
+        Assert.assertEquals(product(8,2,0.95).add(bd(8)),price);
+    }
+
+    private BigDecimal bd(double amount) {
+        return new BigDecimal(amount);
+    }
+
+    private BigDecimal product(double... values) {
+        return Arrays.stream(values).boxed().map(BigDecimal::new).reduce((a,b) -> a.multiply(b)).orElse(new BigDecimal(0));
     }
 }
