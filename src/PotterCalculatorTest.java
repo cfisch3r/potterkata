@@ -63,12 +63,18 @@ public class PotterCalculatorTest {
     }
 
     @Test
-    public void special_case() {
+    public void special_case_where_two_four_series_are_cheaper_than_five_and_three_series() {
         BigDecimal price = calculator.priceFor(PotterCalculator.BOOKS.BOOK1,PotterCalculator.BOOKS.BOOK1,PotterCalculator.BOOKS.BOOK2,PotterCalculator.BOOKS.BOOK2,
                 PotterCalculator.BOOKS.BOOK3,PotterCalculator.BOOKS.BOOK3,PotterCalculator.BOOKS.BOOK4,PotterCalculator.BOOKS.BOOK5);
         Assert.assertEquals(product(8,4,0.8).add(product(8,4,0.8)),price);
     }
 
+    @Test
+    public void special_case_with_five_series_and_three_identical_books() {
+        BigDecimal price = calculator.priceFor(PotterCalculator.BOOKS.BOOK1,PotterCalculator.BOOKS.BOOK2,PotterCalculator.BOOKS.BOOK3,
+                PotterCalculator.BOOKS.BOOK4,PotterCalculator.BOOKS.BOOK5,PotterCalculator.BOOKS.BOOK5,PotterCalculator.BOOKS.BOOK5,PotterCalculator.BOOKS.BOOK5);
+        Assert.assertEquals(product(8,5,0.75).add(product(8,3)),price);
+    }
     private BigDecimal bd(double amount) {
         return new BigDecimal(amount);
     }

@@ -33,7 +33,7 @@ public class PotterCalculator {
         for (BOOKS book: uniqueBooks)
             bookList.remove(book);
 
-        if (uniqueBooks.size() == 5 && bookList.size() == 3) {
+        if (uniqueBooks.size() == 5 && getUniqueBooks(bookList).size() == 3) {
             for (BOOKS book: uniqueBooks) {
                 if (!bookList.contains(book)) {
                     bookList.add(book);
