@@ -1,7 +1,5 @@
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class PotterCalculator {
@@ -10,8 +8,16 @@ public class PotterCalculator {
     private static final double DISCOUNT_RATE = 0.05;
 
     enum BOOKS {
-        BOOK2, BOOK3, BOOK1
+        BOOK2, BOOK3, BOOK4, BOOK1
     }
+
+    private static final Map<Integer,Double> DISCOUNT_RATES = new HashMap<>() {
+        {
+            put(2,0.95);
+            put(3,0.9);
+            put(4,0.8);
+        }
+    };
 
     public BigDecimal priceFor(BOOKS... books) {
         List<BOOKS> bookList = new ArrayList<>(Arrays.asList(books));
@@ -38,7 +44,7 @@ public class PotterCalculator {
     }
 
     private BigDecimal discountFactor(int numberOfBooks) {
-        return new BigDecimal(1 - (numberOfBooks-1) * DISCOUNT_RATE);
+        return new BigDecimal(DISCOUNT_RATES.get(numberOfBooks));
     }
 
     private BigDecimal basePrice(int count) {
