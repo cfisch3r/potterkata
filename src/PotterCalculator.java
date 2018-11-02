@@ -9,6 +9,6 @@ public class PotterCalculator {
     }
 
     public BigDecimal priceFor(BOOKS... books) {
-        return SINGLE_BOOK_PRICE;
+        return SINGLE_BOOK_PRICE.multiply(new BigDecimal(books.length));
     }
 }
