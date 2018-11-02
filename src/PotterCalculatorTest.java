@@ -4,8 +4,6 @@ import org.junit.Test;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class PotterCalculatorTest {
 
@@ -62,6 +60,13 @@ public class PotterCalculatorTest {
     public void five_books_from_series_get_discount() {
         BigDecimal price = calculator.priceFor(PotterCalculator.BOOKS.BOOK1,PotterCalculator.BOOKS.BOOK2,PotterCalculator.BOOKS.BOOK3,PotterCalculator.BOOKS.BOOK4,PotterCalculator.BOOKS.BOOK5);
         Assert.assertEquals(product(8,5,0.75),price);
+    }
+
+    @Test
+    public void special_case() {
+        BigDecimal price = calculator.priceFor(PotterCalculator.BOOKS.BOOK1,PotterCalculator.BOOKS.BOOK1,PotterCalculator.BOOKS.BOOK2,PotterCalculator.BOOKS.BOOK2,
+                PotterCalculator.BOOKS.BOOK3,PotterCalculator.BOOKS.BOOK3,PotterCalculator.BOOKS.BOOK4,PotterCalculator.BOOKS.BOOK5);
+        Assert.assertEquals(product(8,4,0.8).add(product(8,4,0.8)),price);
     }
 
     private BigDecimal bd(double amount) {

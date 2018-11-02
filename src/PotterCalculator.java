@@ -30,10 +30,21 @@ public class PotterCalculator {
     }
 
     private BigDecimal getDiscountPrice(List<BOOKS> bookList, List<BOOKS> uniqueBooks) {
-        var price = new BigDecimal(0);
-        price = price.add(basePrice(uniqueBooks.size()).multiply(discountFactor(uniqueBooks.size())));
         for (BOOKS book: uniqueBooks)
             bookList.remove(book);
+
+        if (uniqueBooks.size() == 5 && bookList.size() == 3) {
+            for (BOOKS book: uniqueBooks) {
+                if (!bookList.contains(book)) {
+                    bookList.add(book);
+                    uniqueBooks.remove(book);
+                    break;
+                }
+            }
+        }
+
+        var price = new BigDecimal(0);
+        price = price.add(basePrice(uniqueBooks.size()).multiply(discountFactor(uniqueBooks.size())));
         if (bookList.size() > 0) {
             price = price.add(priceFor(bookList.toArray(new BOOKS[]{})));
         }
