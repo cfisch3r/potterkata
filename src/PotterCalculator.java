@@ -2,6 +2,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class PotterCalculator {
 
@@ -14,17 +15,26 @@ public class PotterCalculator {
 
     public BigDecimal priceFor(BOOKS... books) {
         List<BOOKS> bookList = new ArrayList<>(Arrays.asList(books));
+        List<BOOKS> uniqueBooks = getUniqueBooks(bookList);
+        if (uniqueBooks.size() > 1){
+            return getDiscountPrice(bookList, uniqueBooks);
+        } else
+            return basePrice(bookList.size());
+    }
+
+    private BigDecimal getDiscountPrice(List<BOOKS> bookList, List<BOOKS> uniqueBooks) {
         var price = new BigDecimal(0);
-        if (books.length > 1 && books[0] != books[1]){
-            price = price.add(basePrice(2).multiply(discountFactor()));
-            bookList.remove(books[0]);
-            bookList.remove(books[1]);
-            if (bookList.size() > 0) {
-                price = price.add(priceFor(bookList.toArray(new BOOKS[]{})));
-            }
-            return price;
+        price = price.add(basePrice(uniqueBooks.size()).multiply(discountFactor()));
+        for (BOOKS book: uniqueBooks)
+            bookList.remove(book);
+        if (bookList.size() > 0) {
+            price = price.add(priceFor(bookList.toArray(new BOOKS[]{})));
         }
-        return basePrice(books.length);
+        return price;
+    }
+
+    private List<BOOKS> getUniqueBooks(List<BOOKS> bookList) {
+        return bookList.stream().distinct().collect(Collectors.toList());
     }
 
     private BigDecimal discountFactor() {
