@@ -8,7 +8,7 @@ public class PotterCalculator {
     private static final double DISCOUNT_RATE = 0.05;
 
     enum BOOKS {
-        BOOK2, BOOK3, BOOK4, BOOK1
+        BOOK2, BOOK3, BOOK4, BOOK5, BOOK1
     }
 
     private static final Map<Integer,Double> DISCOUNT_RATES = new HashMap<>() {
@@ -16,6 +16,7 @@ public class PotterCalculator {
             put(2,0.95);
             put(3,0.9);
             put(4,0.8);
+            put(5,0.75);
         }
     };
 
