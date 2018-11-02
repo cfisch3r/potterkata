@@ -46,6 +46,12 @@ public class PotterCalculatorTest {
         Assert.assertEquals(product(8,2,0.95).add(bd(8)),price);
     }
 
+    @Test
+    public void three_books_from_series_get_discount() {
+        BigDecimal price = calculator.priceFor(PotterCalculator.BOOKS.BOOK1,PotterCalculator.BOOKS.BOOK2,PotterCalculator.BOOKS.BOOK3);
+        Assert.assertEquals(product(8,3,0.9),price);
+    }
+
     private BigDecimal bd(double amount) {
         return new BigDecimal(amount);
     }

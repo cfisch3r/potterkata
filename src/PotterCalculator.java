@@ -10,7 +10,7 @@ public class PotterCalculator {
     private static final double DISCOUNT_RATE = 0.05;
 
     enum BOOKS {
-        BOOK2, BOOK1
+        BOOK2, BOOK3, BOOK1
     }
 
     public BigDecimal priceFor(BOOKS... books) {
@@ -24,7 +24,7 @@ public class PotterCalculator {
 
     private BigDecimal getDiscountPrice(List<BOOKS> bookList, List<BOOKS> uniqueBooks) {
         var price = new BigDecimal(0);
-        price = price.add(basePrice(uniqueBooks.size()).multiply(discountFactor()));
+        price = price.add(basePrice(uniqueBooks.size()).multiply(discountFactor(uniqueBooks.size())));
         for (BOOKS book: uniqueBooks)
             bookList.remove(book);
         if (bookList.size() > 0) {
@@ -37,8 +37,8 @@ public class PotterCalculator {
         return bookList.stream().distinct().collect(Collectors.toList());
     }
 
-    private BigDecimal discountFactor() {
-        return new BigDecimal(1 - DISCOUNT_RATE);
+    private BigDecimal discountFactor(int numberOfBooks) {
+        return new BigDecimal(1 - (numberOfBooks-1) * DISCOUNT_RATE);
     }
 
     private BigDecimal basePrice(int count) {
