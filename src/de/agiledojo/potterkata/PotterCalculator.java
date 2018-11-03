@@ -12,6 +12,7 @@ public class PotterCalculator {
 
     private static final Map<Integer,Double> DISCOUNT_RATES = new HashMap<>() {
         {
+            put(1,1d);
             put(2,0.95);
             put(3,0.9);
             put(4,0.8);
@@ -29,16 +30,7 @@ public class PotterCalculator {
     }
 
 
-    private Price priceFor(List<BOOKS> books) {
-        return containsSeries(books)? discountPrice(books):basePrice(books);
-    }
-
-    private boolean containsSeries(List<BOOKS> bookList) {
-        List<BOOKS> uniqueBooks = distinctBooks(bookList);
-        return uniqueBooks.size() > 1;
-    }
-
-    private Price discountPrice(List<BOOKS> bookList) {
+    private Price priceFor(List<BOOKS> bookList) {
         var series = distinctBooks(bookList);
         var remainingBooks = substract(bookList, series);
 
