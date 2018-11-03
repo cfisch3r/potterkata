@@ -1,7 +1,9 @@
 package de.agiledojo.potterkata;
 
-import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static java.util.Arrays.asList;
@@ -16,17 +18,18 @@ public class PotterCalculator {
             put(5,0.75);
         }
     };
-    private BigDecimal singleBookPrice;
+    private Price singleBookPrice;
 
-    public PotterCalculator(BigDecimal singleBookPrice) {
+    public PotterCalculator(Price singleBookPrice) {
         this.singleBookPrice = singleBookPrice;
     }
 
-    public BigDecimal priceFor(BOOKS... books) {
+    public Price priceFor(BOOKS... books) {
         return priceFor(asList(books));
     }
 
-    private BigDecimal priceFor(List<BOOKS> books) {
+
+    private Price priceFor(List<BOOKS> books) {
         return containsSeries(books)? discountPrice(books):basePrice(books);
     }
 
@@ -35,7 +38,7 @@ public class PotterCalculator {
         return uniqueBooks.size() > 1;
     }
 
-    private BigDecimal discountPrice(List<BOOKS> bookList) {
+    private Price discountPrice(List<BOOKS> bookList) {
         var series = distinctBooks(bookList);
         var remainingBooks = substract(bookList, series);
 
@@ -45,8 +48,8 @@ public class PotterCalculator {
         return calculateDiscountPrice(series, remainingBooks);
     }
 
-    private BigDecimal calculateDiscountPrice(List<BOOKS> series, List<BOOKS> remainingBooks) {
-        var price = new BigDecimal(0).add(basePrice(series).multiply(discountFactor(series.size())));
+    private Price calculateDiscountPrice(List<BOOKS> series, List<BOOKS> remainingBooks) {
+        var price = basePrice(series).multiply(discountFactor(series.size()));
 
         if (remainingBooks.size() > 0)
             price = price.add(priceFor(remainingBooks));
@@ -75,11 +78,11 @@ public class PotterCalculator {
         return bookList.stream().distinct().collect(Collectors.toList());
     }
 
-    private BigDecimal discountFactor(int numberOfBooks) {
-        return new BigDecimal(DISCOUNT_RATES.get(numberOfBooks));
+    private double discountFactor(int numberOfBooks) {
+        return DISCOUNT_RATES.get(numberOfBooks);
     }
 
-    private BigDecimal basePrice(List<BOOKS> books) {
-        return singleBookPrice.multiply(new BigDecimal(books.size()));
+    private Price basePrice(List<BOOKS> books) {
+        return singleBookPrice.multiply(books.size());
     }
 }
