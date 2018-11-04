@@ -1,28 +1,19 @@
 package de.agiledojo.potterkata;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import static java.util.Arrays.asList;
 
 public class PotterCalculator {
 
-    private static final Map<Integer,Double> DISCOUNT_RATES = new HashMap<>() {
-        {
-            put(1,1d);
-            put(2,0.95);
-            put(3,0.9);
-            put(4,0.8);
-            put(5,0.75);
-        }
-    };
     private Price singleBookPrice;
+    private DiscountRates discountRates;
 
-    public PotterCalculator(Price singleBookPrice) {
+    public PotterCalculator(Price singleBookPrice, DiscountRates discountRates) {
         this.singleBookPrice = singleBookPrice;
+        this.discountRates = discountRates;
     }
 
     public Price priceFor(BOOKS... books) {
@@ -41,7 +32,7 @@ public class PotterCalculator {
     }
 
     private Price calculateDiscountPrice(int seriesSize, List<BOOKS> remainingBooks) {
-        var price = basePrice(seriesSize).multiply(discountFactor(seriesSize));
+        var price = basePrice(seriesSize).multiply(discountRates.factorFor(seriesSize));
 
         if (remainingBooks.size() > 0)
             price = price.add(priceFor(remainingBooks));
@@ -68,10 +59,6 @@ public class PotterCalculator {
 
     private List<BOOKS> distinctBooks(List<BOOKS> bookList) {
         return bookList.stream().distinct().collect(Collectors.toList());
-    }
-
-    private double discountFactor(int numberOfBooks) {
-        return DISCOUNT_RATES.get(numberOfBooks);
     }
 
     private Price basePrice(int numberOfBooks) {

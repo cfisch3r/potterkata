@@ -4,6 +4,9 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static de.agiledojo.potterkata.BOOKS.*;
 
 public class PotterCalculatorTest {
@@ -12,7 +15,7 @@ public class PotterCalculatorTest {
 
     @Before
     public void setUp() {
-        calculator = new PotterCalculator(new Price(8));
+        calculator = new PotterCalculator(new Price(8), new DiscountRatesMock());
     }
 
     @Test
@@ -77,4 +80,20 @@ public class PotterCalculatorTest {
         Assert.assertEquals(new Price(8*5*0.75+8*3),price);
     }
 
+    private static class DiscountRatesMock implements DiscountRates {
+        static final Map<Integer, Double> DISCOUNT_RATES = new HashMap<>() {
+            {
+                put(1, 1d);
+                put(2, 0.95);
+                put(3, 0.9);
+                put(4, 0.8);
+                put(5, 0.75);
+            }
+        };
+
+        @Override
+        public double factorFor(int numberOfBooks) {
+            return DISCOUNT_RATES.get(numberOfBooks);
+        }
+    }
 }
