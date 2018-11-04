@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static java.util.Arrays.asList;
-
 public class PotterCalculator {
 
     private Price singleBookPrice;
@@ -16,28 +14,28 @@ public class PotterCalculator {
         this.discountRates = discountRates;
     }
 
-    public Price priceFor(BOOKS... books) {
-        return priceFor(asList(books));
-    }
-
-
-    private Price priceFor(List<BOOKS> bookList) {
+    public Price priceFor(List<BOOKS> bookList) {
         var series = distinctBooks(bookList);
         var remainingBooks = substract(bookList, series);
 
-        optimizeSeriesSplitting(series, remainingBooks);
+        optimizeSeriesSplittingForCheaperPrices(series, remainingBooks);
 
         return calculateDiscountPrice(series.size(), remainingBooks);
     }
 
-    private void optimizeSeriesSplitting(List<BOOKS> series, List<BOOKS> remainingBooks) {
-        int n = series.size();
-        if (n >2 && distinctBooks(remainingBooks).size() == n-2) {
-            if (seriesPrice(n-1).multiply(2).compareTo(seriesPrice(n)
-                    .add(seriesPrice(n-2))) == -1)
-                splitSeriesEqually(series, remainingBooks);
-        }
+    private void optimizeSeriesSplittingForCheaperPrices(List<BOOKS> series, List<BOOKS> remainingBooks) {
+        if (booksCanBeSplittedEqually(series.size(), remainingBooks) &&
+            equallySplittedSeriesAreCheaper(series.size()))
+            splitSeriesEqually(series, remainingBooks);
+    }
 
+    private boolean booksCanBeSplittedEqually(int maxSeriesSize, List<BOOKS> remainingBooks) {
+        return maxSeriesSize >2 && distinctBooks(remainingBooks).size() == maxSeriesSize-2;
+    }
+
+    private boolean equallySplittedSeriesAreCheaper(int maxSeriesSize) {
+        return seriesPrice(maxSeriesSize-1).multiply(2).compareTo(seriesPrice(maxSeriesSize)
+                .add(seriesPrice(maxSeriesSize-2))) == -1;
     }
 
     private Price calculateDiscountPrice(int seriesSize, List<BOOKS> remainingBooks) {
