@@ -35,13 +35,13 @@ public class PotterCalculator {
         var remainingBooks = substract(bookList, series);
 
         if (series.size() == 5 && distinctBooks(remainingBooks).size() == 3)
-            redistribute(series, remainingBooks);
+            splitSeriesEqually(series, remainingBooks);
 
-        return calculateDiscountPrice(series, remainingBooks);
+        return calculateDiscountPrice(series.size(), remainingBooks);
     }
 
-    private Price calculateDiscountPrice(List<BOOKS> series, List<BOOKS> remainingBooks) {
-        var price = basePrice(series).multiply(discountFactor(series.size()));
+    private Price calculateDiscountPrice(int seriesSize, List<BOOKS> remainingBooks) {
+        var price = basePrice(seriesSize).multiply(discountFactor(seriesSize));
 
         if (remainingBooks.size() > 0)
             price = price.add(priceFor(remainingBooks));
@@ -49,7 +49,7 @@ public class PotterCalculator {
         return price;
     }
 
-    private void redistribute(List<BOOKS> series, List<BOOKS> remainingBooks) {
+    private void splitSeriesEqually(List<BOOKS> series, List<BOOKS> remainingBooks) {
         for (BOOKS book: series) {
             if (!remainingBooks.contains(book)) {
                 remainingBooks.add(book);
@@ -74,7 +74,7 @@ public class PotterCalculator {
         return DISCOUNT_RATES.get(numberOfBooks);
     }
 
-    private Price basePrice(List<BOOKS> books) {
-        return singleBookPrice.multiply(books.size());
+    private Price basePrice(int numberOfBooks) {
+        return singleBookPrice.multiply(numberOfBooks);
     }
 }
