@@ -90,6 +90,13 @@ public class PotterCalculatorTest {
         Assert.assertEquals(new Price((8*5*0.75)+(8*3*0.8)),price);
     }
 
+    @Test
+    public void two_2_series_are_preferred_when_cheaper() {
+        discountRates.discountMap.replace(2,0.9);
+        var price = calculator.priceFor(BOOK1, BOOK1, BOOK2, BOOK3);
+        Assert.assertEquals(new Price((8*2*0.9)*2),price);
+    }
+
     private static class DiscountRatesMock implements DiscountRates {
         private Map<Integer, Double> discountMap = new HashMap<>() {
             {

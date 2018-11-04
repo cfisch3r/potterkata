@@ -31,9 +31,10 @@ public class PotterCalculator {
     }
 
     private void optimizeSeriesSplitting(List<BOOKS> series, List<BOOKS> remainingBooks) {
-        if (series.size() == 5 && distinctBooks(remainingBooks).size() == 3) {
-            if (seriesPrice(4).multiply(2).compareTo(seriesPrice(5)
-                    .add(seriesPrice(3))) == -1)
+        int n = series.size();
+        if (n >2 && distinctBooks(remainingBooks).size() == n-2) {
+            if (seriesPrice(n-1).multiply(2).compareTo(seriesPrice(n)
+                    .add(seriesPrice(n-2))) == -1)
                 splitSeriesEqually(series, remainingBooks);
         }
 
