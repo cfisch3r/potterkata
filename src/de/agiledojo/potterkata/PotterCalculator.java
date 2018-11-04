@@ -20,7 +20,7 @@ public class PotterCalculator {
 
         optimizeSeriesSplittingForCheaperPrices(series, remainingBooks);
 
-        return calculateDiscountPrice(series.size(), remainingBooks);
+        return calculatePrice(series.size(), remainingBooks);
     }
 
     private void optimizeSeriesSplittingForCheaperPrices(List<BOOKS> series, List<BOOKS> remainingBooks) {
@@ -38,7 +38,7 @@ public class PotterCalculator {
                 .add(seriesPrice(maxSeriesSize-2))) == -1;
     }
 
-    private Price calculateDiscountPrice(int seriesSize, List<BOOKS> remainingBooks) {
+    private Price calculatePrice(int seriesSize, List<BOOKS> remainingBooks) {
         var price = seriesPrice(seriesSize);
 
         if (remainingBooks.size() > 0)
