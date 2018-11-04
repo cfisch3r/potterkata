@@ -12,10 +12,12 @@ import static de.agiledojo.potterkata.BOOKS.*;
 public class PotterCalculatorTest {
 
     private PotterCalculator calculator;
+    private DiscountRatesMock discountRates;
 
     @Before
     public void setUp() {
-        calculator = new PotterCalculator(new Price(8), new DiscountRatesMock());
+        discountRates = new DiscountRatesMock();
+        calculator = new PotterCalculator(new Price(8), discountRates);
     }
 
     @Test
@@ -78,6 +80,14 @@ public class PotterCalculatorTest {
         var price = calculator.priceFor(BOOK1, BOOK2, BOOK3,
                 BOOK4, BOOK5, BOOK5, BOOK5, BOOK5);
         Assert.assertEquals(new Price(8*5*0.75+8*3),price);
+    }
+
+    @Test
+    public void five_and_tree_series_are_preferred_when_cheaper() {
+        discountRates.discountMap.replace(3,0.8);
+        var price = calculator.priceFor(BOOK1, BOOK1, BOOK2, BOOK2,
+                BOOK3, BOOK3, BOOK4, BOOK5);
+        Assert.assertEquals(new Price((8*5*0.75)+(8*3*0.8)),price);
     }
 
     private static class DiscountRatesMock implements DiscountRates {

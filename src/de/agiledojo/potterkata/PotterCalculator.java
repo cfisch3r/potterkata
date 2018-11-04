@@ -31,17 +31,25 @@ public class PotterCalculator {
     }
 
     private void optimizeSeriesSplitting(List<BOOKS> series, List<BOOKS> remainingBooks) {
-        if (series.size() == 5 && distinctBooks(remainingBooks).size() == 3)
-            splitSeriesEqually(series, remainingBooks);
+        if (series.size() == 5 && distinctBooks(remainingBooks).size() == 3) {
+            if (seriesPrice(4).multiply(2).compareTo(seriesPrice(5)
+                    .add(seriesPrice(3))) == -1)
+                splitSeriesEqually(series, remainingBooks);
+        }
+
     }
 
     private Price calculateDiscountPrice(int seriesSize, List<BOOKS> remainingBooks) {
-        var price = basePrice(seriesSize).multiply(discountRates.factorFor(seriesSize));
+        var price = seriesPrice(seriesSize);
 
         if (remainingBooks.size() > 0)
             price = price.add(priceFor(remainingBooks));
 
         return price;
+    }
+
+    private Price seriesPrice(int seriesSize) {
+        return basePrice(seriesSize).multiply(discountRates.factorFor(seriesSize));
     }
 
     private void splitSeriesEqually(List<BOOKS> series, List<BOOKS> remainingBooks) {

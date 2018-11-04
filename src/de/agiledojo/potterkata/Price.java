@@ -41,4 +41,8 @@ public class Price {
     public int hashCode() {
         return Objects.hash(amount);
     }
+
+    public int compareTo(Price other) {
+        return this.amount.compareTo(other.amount);
+    }
 }
