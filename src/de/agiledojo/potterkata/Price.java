@@ -15,8 +15,8 @@ public class Price {
         this.amount = amount.setScale(2, RoundingMode.HALF_UP);
     }
 
-    Price multiply(double times) {
-        return new Price(this.amount.multiply(new BigDecimal(times)));
+    Price multiply(double factor) {
+        return new Price(this.amount.multiply(new BigDecimal(factor)));
     }
 
     Price add(Price price) {
