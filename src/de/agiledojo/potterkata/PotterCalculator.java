@@ -25,10 +25,14 @@ public class PotterCalculator {
         var series = distinctBooks(bookList);
         var remainingBooks = substract(bookList, series);
 
-        if (series.size() == 5 && distinctBooks(remainingBooks).size() == 3)
-            splitSeriesEqually(series, remainingBooks);
+        optimizeSeriesSplitting(series, remainingBooks);
 
         return calculateDiscountPrice(series.size(), remainingBooks);
+    }
+
+    private void optimizeSeriesSplitting(List<BOOKS> series, List<BOOKS> remainingBooks) {
+        if (series.size() == 5 && distinctBooks(remainingBooks).size() == 3)
+            splitSeriesEqually(series, remainingBooks);
     }
 
     private Price calculateDiscountPrice(int seriesSize, List<BOOKS> remainingBooks) {

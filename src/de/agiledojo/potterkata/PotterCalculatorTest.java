@@ -81,7 +81,7 @@ public class PotterCalculatorTest {
     }
 
     private static class DiscountRatesMock implements DiscountRates {
-        static final Map<Integer, Double> DISCOUNT_RATES = new HashMap<>() {
+        private Map<Integer, Double> discountMap = new HashMap<>() {
             {
                 put(1, 1d);
                 put(2, 0.95);
@@ -93,7 +93,7 @@ public class PotterCalculatorTest {
 
         @Override
         public double factorFor(int numberOfBooks) {
-            return DISCOUNT_RATES.get(numberOfBooks);
+            return discountMap.get(numberOfBooks);
         }
     }
 }
