@@ -15,10 +15,12 @@ public class Combinator {
 
         combinations.add(getCombination(remainingBooks, series.size()));
 
-        if (booksCanBeSplittedEqually(series.size(), remainingBooks)) {
-            splitSeriesEqually(series, remainingBooks);
-            combinations.add(getCombination(remainingBooks, series.size()));
-        }
+        if (series.size() > 1)
+            series.remove(series.size() -1);
+        remainingBooks = substract(bookList, series);
+
+        combinations.add(getCombination(remainingBooks, series.size()));
+
 
         return combinations;
     }
@@ -32,20 +34,6 @@ public class Combinator {
             remainingBooks = substract(remainingBooks, series1);
         }
         return seriesListSizes;
-    }
-
-    private boolean booksCanBeSplittedEqually(int maxSeriesSize, List<BOOKS> remainingBooks) {
-        return maxSeriesSize > 2 && distinctBooks(remainingBooks).size() == maxSeriesSize - 2;
-    }
-
-    private void splitSeriesEqually(List<BOOKS> series, List<BOOKS> remainingBooks) {
-        for (BOOKS book : series) {
-            if (!remainingBooks.contains(book)) {
-                remainingBooks.add(book);
-                series.remove(book);
-                break;
-            }
-        }
     }
 
     private List<BOOKS> substract(List<BOOKS> bookList, List<BOOKS> series) {
